@@ -1,7 +1,27 @@
 #!/usr/bin/env ruby
-
+require "set"
 require "./ruby-utils/getOpts.rb"
 require "./ruby-utils/rotator.rb"
+
+
+rot = Rotator.new(1000)
+STDERR.printf("+")
+ivd = Hash.new()
+if (Opts.include?("ivd-txt"))
+  f = File::open(Opts.ivd_txt, "r")
+  while (f.gets())
+    STDERR.printf(rot.get())
+    toks = $_.chomp().gsub(/#.*/, "").split(/;\s*/)
+    next if (toks.length < 3)
+    hex_with_vs, collection_name, glyph_name, =  toks
+    hex_with_vs = hex_with_vs.split(/\s+/).map{|t| t.hex()}
+    alt_uni2 = sprintf("%06x.%06x", hex_with_vs.first, hex_with_vs.last)
+    ivd[collection_name] = Set.new() unless (ivd.include?(collection_name))
+    ivd[collection_name].add(alt_uni2)
+  end
+  f.close()
+end
+STDERR.puts()
 
 class SfdChar
   attr_accessor(:lines, :attr)
@@ -35,6 +55,14 @@ class SfdChar
 
   def hasAltUni2()
     return @attr.include?("AltUni2")
+  end
+
+  def ivdCollection(coll_name, ivd)
+    return false unless (@attr.include?("AltUni2"))
+
+    alt_uni2s = @attr["AltUni2"].map{|t| t.split(".")[0..1].join(".")}
+    # STDERR.puts( "# alt_uni2s: " + alt_uni2s.join(" ") )
+    return alt_uni2s.any?{|a| ivd[coll_name].include?(a)}
   end
 
   def to_s()
@@ -123,6 +151,15 @@ printf("BeginChars: %d %d\n", numCodeSpace, numDefinedChars)
 
 sfdFonts.each do |sfdFont|
   sfdFont.sfdChars.each do |sc|
+    if (!sc.hasAltUni2())
+      STDERR.printf("# discard : %s with no IVS\n", sc.attr["StartChar"])
+      next
+    elsif (0 < ivd.length && Opts.include?("ivd-collection"))
+      if (!sc.ivdCollection(Opts.ivd_collection, ivd))
+        STDERR.printf("# discard AltUni2: %s\n", sc.attr["AltUni2"].join(" "))
+        next
+      end
+    end
     puts()
     puts sc.to_s()
   end
