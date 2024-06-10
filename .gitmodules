@@ -1,0 +1,3 @@
+[submodule "ruby-utils"]
+	path = ruby-utils
+	url = https://gitlab.com/mpsuzuki/ruby-utils.git
