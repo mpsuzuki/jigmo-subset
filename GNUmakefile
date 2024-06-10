@@ -48,8 +48,14 @@ Jigmo-20230816.zip:
 IVD_Sequences.txt:
 	wget https://www.unicode.org/ivd/data/2022-09-13/$@
 
-Jigmo.ttf: Jigmo-20230816.zip
-	unzip -x $<
+Jigmo-20230816/Jigmo.ttf: Jigmo-20230816.zip
+	unzip -x $< $@
+
+Jigmo-20230816/Jigmo2.ttf: Jigmo-20230816.zip
+	unzip -x $< $@
+
+Jigmo-20230816/Jigmo3.ttf: Jigmo-20230816.zip
+	unzip -x $< $@
 
 Jigmo1.ttf: Jigmo-20230816/Jigmo.ttf
 	ln -s $< $@
