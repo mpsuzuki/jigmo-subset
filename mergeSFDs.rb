@@ -110,7 +110,15 @@ end
 numCodeSpace    = sfdFonts.map{|sfdFont| sfdFont.numCodeSpace}.max()
 numDefinedChars = sfdFonts.map{|sfdFont| sfdFont.numDefinedChars}.inject("+")
 
-puts sfdFonts.first.sfdPreamble.join("\n")
+puts sfdFonts.first.sfdPreamble.map{|l|
+  if (l =~ /^FontName: / && Opts.include?("font-name"))
+    ["FontName", Opts.font_name].join(": ")
+  elsif (l =~ /^FullName: / && Opts.include?("full-name"))
+    ["FullName", Opts.full_name].join(": ")
+  else
+    l
+  end
+}.join("\n")
 printf("BeginChars: %d %d\n", numCodeSpace, numDefinedChars)
 
 sfdFonts.each do |sfdFont|

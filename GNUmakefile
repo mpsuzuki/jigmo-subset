@@ -13,7 +13,7 @@ JigmoVS.ttf: JigmoVS.sfd
 	fontforge -lang=ff -c 'Open("'$<'");Generate("'$@'");Quit()"'
 
 JigmoVS.sfd: Jigmo1-VS.sfd Jigmo2-VS.sfd Jigmo3-VS.sfd
-	./mergeSFDs.rb $?  > $@
+	./mergeSFDs.rb --font-name="JigmoVS" --full-name="JigmoVS" $?  > $@
 
 Jigmo1-VS.sfd: Jigmo1.sfd
 	./filterCJKnonVS.rb < $< > $@
