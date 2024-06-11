@@ -1,4 +1,6 @@
-all: Jigmo1.ttf Jigmo2.ttf Jigmo3.ttf
+all: JigmoVS.ttf JigmoVS-MJ.ttf JigmoVS-HD.ttf \
+	JigmoVS.woff2 JigmoVS-MJ.woff2 JigmoVS-HD.woff2
+
 .SUFFIXES: .ttf .sfd .woff .woff2
 
 .ttf.sfd:
@@ -6,9 +8,6 @@ all: Jigmo1.ttf Jigmo2.ttf Jigmo3.ttf
 
 .sfd.woff2:
 	fontforge -lang=ff -c 'Open("'$<'");Generate("'$@'");Quit()"'
-
-all: JigmoVS.ttf JigmoVS-MJ.ttf JigmoVS-HD.ttf \
-	JigmoVS.woff2 JigmoVS-MJ.woff2 JigmoVS-HD.woff2
 
 JigmoVS.ttf: JigmoVS.sfd
 	fontforge -lang=ff -c 'Open("'$<'");Generate("'$@'");Quit()"'
