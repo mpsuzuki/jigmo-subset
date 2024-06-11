@@ -22,15 +22,17 @@ JigmoVS-HD.ttf: JigmoVS-HD.sfd
 JigmoVS.sfd: Jigmo1-VS.sfd Jigmo2-VS.sfd Jigmo3-VS.sfd
 	./mergeSFDs.rb --font-name="JigmoVS" --full-name="JigmoVS" $?  > $@
 
-JigmoVS-MJ.sfd: Jigmo1-VS.sfd Jigmo2-VS.sfd Jigmo3-VS.sfd
+JigmoVS-MJ.sfd: Jigmo1-VS.sfd Jigmo2-VS.sfd Jigmo3-VS.sfd IVD_Sequences.txt
 	./mergeSFDs.rb \
 		--ivd-txt=IVD_Sequences.txt --ivd-collection=Moji_Joho \
-		--font-name="JigmoVS-Moji_Joho" --full-name="JigmoVS-Moji_Joho" $?  > $@
+		--font-name="JigmoVS-Moji_Joho" --full-name="JigmoVS-Moji_Joho" \
+		Jigmo1-VS.sfd Jigmo2-VS.sfd Jigmo3-VS.sfd > $@
 
-JigmoVS-HD.sfd: Jigmo1-VS.sfd Jigmo2-VS.sfd Jigmo3-VS.sfd
+JigmoVS-HD.sfd: Jigmo1-VS.sfd Jigmo2-VS.sfd Jigmo3-VS.sfd IVD_Sequences.txt
 	./mergeSFDs.rb \
 		--ivd-txt=IVD_Sequences.txt --ivd-collection=Hanyo-Denshi \
-		--font-name="JigmoVS-Hanyo-Denshi" --full-name="JigmoVS-Hanyo-Denshi" $?  > $@
+		--font-name="JigmoVS-Hanyo-Denshi" --full-name="JigmoVS-Hanyo-Denshi" \
+		Jigmo1-VS.sfd Jigmo2-VS.sfd Jigmo3-VS.sfd > $@
 
 Jigmo1-VS.sfd: Jigmo1.sfd
 	./filterCJKnonVS.rb < $< > $@
