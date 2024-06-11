@@ -70,3 +70,6 @@ Jigmo2.ttf: Jigmo-20230816/Jigmo2.ttf
 Jigmo3.ttf: Jigmo-20230816/Jigmo3.ttf
 	ln -sf $< $@
 
+clean:
+	rm -rvf Jigmo-20230816/* Jigmo-20230816.zip IVD_Sequences.txt
+	rm -vf *.sfd *.ttf *.woff*
