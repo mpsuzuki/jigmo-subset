@@ -73,3 +73,45 @@ Jigmo3.ttf: Jigmo-20230816/Jigmo3.ttf
 clean:
 	rm -rvf Jigmo-20230816/* Jigmo-20230816.zip IVD_Sequences.txt
 	rm -vf *.sfd *.ttf *.woff*
+
+coverage.json:
+	wget -O coverage.json \
+	"https://gitlab.com/mpsuzuki/mj-shrink-map/-/raw/main/coverage.json?ref_type=heads&inline=false"
+
+Jigmo1-KX-no-MSMin.sfd: Jigmo1.sfd coverage.json
+	./filterByUCS.rb \
+		--ucs-drop-file=MSTT/msmincho.have.txt \
+		--coverage-json=coverage.json \
+		--coverage=kKangXi  < Jigmo1.sfd > $@
+
+Jigmo2-KX-no-MSMin.sfd: Jigmo2.sfd coverage.json
+	./filterByUCS.rb \
+		--ucs-drop-file=MSTT/msmincho.have.txt \
+		--coverage-json=coverage.json \
+		--coverage=kKangXi  < Jigmo2.sfd > $@
+
+Jigmo-KX-no-MSMin.sfd: Jigmo1-KX-no-MSMin.sfd Jigmo2-KX-no-MSMin.sfd
+	./mergeSFDs-noVS.rb \
+		$^ > $@
+
+Jigmo-KX-no-MSMin.ttf: Jigmo-KX-no-MSMin.sfd
+	fontforge -lang=ff -c 'Open("'$<'");Generate("'$@'");Quit()"'
+
+Jigmo1-Morohashi-no-MSMin.sfd: Jigmo1.sfd coverage.json
+	./filterByUCS.rb \
+		--ucs-drop-file=MSTT/msmincho.have.txt \
+		--coverage-json=coverage.json \
+		--coverage=kMorohashi  < Jigmo1.sfd > $@
+
+Jigmo2-Morohashi-no-MSMin.sfd: Jigmo2.sfd coverage.json
+	./filterByUCS.rb \
+		--ucs-drop-file=MSTT/msmincho.have.txt \
+		--coverage-json=coverage.json \
+		--coverage=kMorohashi  < Jigmo2.sfd > $@
+
+Jigmo-Morohashi-no-MSMin.sfd: Jigmo1-Morohashi-no-MSMin.sfd Jigmo2-Morohashi-no-MSMin.sfd
+	./mergeSFDs-noVS.rb \
+		$^ > $@
+
+Jigmo-Morohashi-no-MSMin.ttf: Jigmo-Morohashi-no-MSMin.sfd
+	fontforge -lang=ff -c 'Open("'$<'");Generate("'$@'");Quit()"'
