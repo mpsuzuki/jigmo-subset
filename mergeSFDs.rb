@@ -150,10 +150,22 @@ puts sfdFonts.first.sfdPreamble.map{|l|
 printf("BeginChars: %d %d\n", numCodeSpace, numDefinedChars)
 
 sfdFonts.each do |sfdFont|
+  baseUcss = Set.new()
+  sfdFont.sfdChars.each do |sc|
+    next if (!sc.hasAltUni2())
+    if (0 < ivd.length && Opts.include?("ivd-collection"))
+      next if (!sc.ivdCollection(Opts.ivd_collection, ivd))
+    end
+    baseUcss += sc.attr["AltUni2"].map{|t| t.split(".").first.hex()}.sort().uniq().map{|i| sprintf("uni%04X", i)}
+  end
   sfdFont.sfdChars.each do |sc|
     if (!sc.hasAltUni2())
-      STDERR.printf("# discard : %s with no IVS\n", sc.attr["StartChar"])
-      next
+      uniHex = sprintf("uni%04X", sc.attr["Encoding"].first)
+      if (!baseUcss.include?(uniHex)) 
+        STDERR.printf("# discard : %s with no IVS, and not base glyph for VS instances\n", sc.attr["StartChar"])
+        next
+      end
+      STDERR.printf("%s has no UVS, but include as a base character\n", uniHex)
     elsif (0 < ivd.length && Opts.include?("ivd-collection"))
       if (!sc.ivdCollection(Opts.ivd_collection, ivd))
         STDERR.printf("# discard AltUni2: %s\n", sc.attr["AltUni2"].join(" "))
