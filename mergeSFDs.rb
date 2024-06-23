@@ -149,9 +149,10 @@ puts sfdFonts.first.sfdPreamble.map{|l|
 }.join("\n")
 printf("BeginChars: %d %d\n", numCodeSpace, numDefinedChars)
 
-sfdFonts.each do |sfdFont|
+encoding_done = Set.new()
+sfdFonts.each_with_index do |sfdFont, fi|
   baseUcss = Set.new()
-  sfdFont.sfdChars.each do |sc|
+  sfdFont.sfdChars.each_with_index do |sc, gi|
     next if (!sc.hasAltUni2())
     if (0 < ivd.length && Opts.include?("ivd-collection"))
       next if (!sc.ivdCollection(Opts.ivd_collection, ivd))
@@ -172,8 +173,13 @@ sfdFonts.each do |sfdFont|
         next
       end
     end
+
+    enc = sc.attr["Encoding"].first
+    next if (sc.isASCII() && encoding_done.include?(enc))
+
     puts()
     puts sc.to_s()
+    encoding_done << enc
   end
 end
 
