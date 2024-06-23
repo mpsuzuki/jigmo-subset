@@ -18,7 +18,7 @@ JigmoVS-MJ.ttf: JigmoVS-MJ.sfd
 JigmoVS-HD.ttf: JigmoVS-HD.sfd
 	fontforge -lang=ff -c 'Open("'$<'");Generate("'$@'");Quit()"'
 
-JigmoVS-HD+MJ.ttf: JigmoVS-HD+MJ.sfd
+JigmoVS-HD-MJ.ttf: JigmoVS-HD-MJ.sfd
 	fontforge -lang=ff -c 'Open("'$<'");Generate("'$@'");Quit()"'
 
 JigmoVS.sfd: Jigmo1-VS.sfd Jigmo2-VS.sfd Jigmo3-VS.sfd
@@ -36,19 +36,19 @@ JigmoVS-HD.sfd: Jigmo1-VS.sfd Jigmo2-VS.sfd Jigmo3-VS.sfd IVD_Sequences.txt
 		--font-name="JigmoVS-Hanyo-Denshi" --full-name="JigmoVS-Hanyo-Denshi" \
 		Jigmo1-VS.sfd Jigmo2-VS.sfd Jigmo3-VS.sfd > $@
 
-JigmoVS-HD+MJ.sfd: JigmoVS-HD.sfd JigmoVS-MJ.sfd
+JigmoVS-HD-MJ.sfd: JigmoVS-HD.sfd JigmoVS-MJ.sfd
 	./mergeSFDs.rb \
-		--font-name="JigmoVS-HD+MJ" --full-name="JigmoVS-Hanyo-Denshi+Moji_Joho" \
+		--font-name="JigmoVS-HD-MJ" --full-name="JigmoVS-Hanyo-Denshi_Moji_Joho" \
 		JigmoVS-HD.sfd JigmoVS-MJ.sfd > $@
 
 Jigmo1-VS.sfd: Jigmo1.sfd
 	./filterCJKnonVS.rb < $< > $@
 
 Jigmo2-VS.sfd: Jigmo2.sfd
-	./filterCJKnonVS.rb < $< > $@
+	./filterCJKnonVS.rb < $< | ./shiftPUA.rb --pua-delta=0x3000 > $@
 
 Jigmo3-VS.sfd: Jigmo3.sfd
-	./filterCJKnonVS.rb < $< > $@
+	./filterCJKnonVS.rb < $< | ./shiftPUA.rb --pua-delta=0x4000 > $@
 
 Jigmo-20230816.zip:
 	wget https://kamichikoichi.github.io/jigmo/Jigmo-20230816.zip
