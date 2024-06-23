@@ -6,9 +6,13 @@ require "./sfd.rb"
 
 STDERR.printf("0x%04X\n", Opts.pua_delta)
 
-f = File::open(Opts.args.first, "r")
-sfdFont = SfdFont.new().parse(f)  
-f.close()
+if (Opts.args.length > 0)
+  f = File::open(Opts.args.first, "r")
+  sfdFont = SfdFont.new().parse(f)  
+  f.close()
+else
+  sfdFont = SfdFont.new().parse(STDIN)  
+end
 
 sfdFont.sfdChars.each do |sc|
   next if (sc.name() !~ /^u[0-9A-F]+$/)
