@@ -78,6 +78,10 @@ class SfdChar
     # p @attr
     return (@attr["Encoding"][0] < 0x80)
   end
+
+  def name()
+    return @lines.select{|l| l =~ /StartChar: /}.first.gsub(/StartChar:\s+/, "")
+  end
 end
 
 numCodeSpace = nil
@@ -175,6 +179,14 @@ sfdFonts.each_with_index do |sfdFont, fi|
     end
 
     enc = sc.attr["Encoding"].first
+    if (0 < fi)
+      if (encoding_done.include?(enc))
+        STDERR.printf("# character \"%s\" @ 0x%04X is already emitted by previous font, skip this\n", sc.name(), enc)
+        next
+      else
+        STDERR.printf("# character \"%s\" @ 0x%04X is not emitted yet, include this\n", sc.name(), enc)
+      end
+    end
     next if (sc.isASCII() && encoding_done.include?(enc))
 
     puts()
