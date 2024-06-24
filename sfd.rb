@@ -91,9 +91,18 @@ class SfdChar
     return (@attr["Encoding"][1] < 0)
   end
 
+  def codepoint()
+    return (@attr["Encoding"][0])
+  end
+
   def isASCII()
     # p @attr
-    return (@attr["Encoding"][0] < 0x80)
+    return (self.codepoint() < 0x80)
+  end
+
+  def isDIGIT()
+    # p @attr
+    return (0x2F < self.codepoint() && self.codepoint() < 0x3A)
   end
 end
 
