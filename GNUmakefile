@@ -1,5 +1,5 @@
-all: JigmoVS.ttf JigmoVS-MJ.ttf JigmoVS-HD.ttf \
-	JigmoVS.woff2 JigmoVS-MJ.woff2 JigmoVS-HD.woff2
+all: JigmoVS.ttf JigmoVS-MJ.ttf JigmoVS-HD.ttf JigmoVS-HD+MJ.ttf \
+	JigmoVS.woff2 JigmoVS-MJ.woff2 JigmoVS-HD.woff2 JigmoVS-HD+MJ.woff2
 
 .SUFFIXES: .ttf .sfd .woff .woff2
 
@@ -18,7 +18,7 @@ JigmoVS-MJ.ttf: JigmoVS-MJ.sfd
 JigmoVS-HD.ttf: JigmoVS-HD.sfd
 	fontforge -lang=ff -c 'Open("'$<'");Generate("'$@'");Quit()"'
 
-JigmoVS-HD-MJ.ttf: JigmoVS-HD-MJ.sfd
+JigmoVS-HD+MJ.ttf: JigmoVS-HD+MJ.sfd
 	fontforge -lang=ff -c 'Open("'$<'");Generate("'$@'");Quit()"'
 
 JigmoVS.sfd: Jigmo1-VS.sfd Jigmo2-VS.sfd Jigmo3-VS.sfd
@@ -36,7 +36,7 @@ JigmoVS-HD.sfd: Jigmo1-VS.sfd Jigmo2-VS.sfd Jigmo3-VS.sfd IVD_Sequences.txt
 		--font-name="JigmoVS-Hanyo-Denshi" --full-name="JigmoVS-Hanyo-Denshi" \
 		Jigmo1-VS.sfd Jigmo2-VS.sfd Jigmo3-VS.sfd > $@
 
-JigmoVS-HD-MJ.sfd: JigmoVS-HD.sfd JigmoVS-MJ.sfd
+JigmoVS-HD+MJ.sfd: JigmoVS-HD.sfd JigmoVS-MJ.sfd
 	./mergeSFDs.rb \
 		--font-name="JigmoVS-HD-MJ" --full-name="JigmoVS-Hanyo-Denshi_Moji_Joho" \
 		JigmoVS-HD.sfd JigmoVS-MJ.sfd > $@
