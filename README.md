@@ -1,8 +1,27 @@
 Jigmo-Subset
 ============
 
-These fonts are subsets of [Jigmo fonts](https://kamichikoichi.github.io/jigmo/),
+These are subsetting tool of [Jigmo fonts](https://kamichikoichi.github.io/jigmo/),
 which cover CJK Unified Ideographs Extension G, H, I, and all IVD registered by 2023.
+
+# Prerequests
+
+* fontforge-nox
+* GNU Make
+* wget
+* Ruby
+* unzip (or PKZip)
+
+# How to generate subset fonts
+
+```
+git clone https://github.com/mpsuzuki/jigmo-subset.git
+cd jigmo-subset
+git submodule update --init
+make
+```
+
+# Background
 
 The intention of the subsetting is primarily for the CC0 implementation of Moji_Joho.
 Although IPAmj font is officially provided under OFL, the current owner of IPAmj
